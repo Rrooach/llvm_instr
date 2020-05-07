@@ -1,0 +1,1 @@
+/usr/bin/c++ -fPIC  -Wl,-znodelete -shared  -o libSkeletonPass.so CMakeFiles/SkeletonPass.dir/Skeleton.cpp.o  -L/root/clang/clang+llvm-9.0.1-x86_64-linux-gnu-ubuntu-16.04/lib 

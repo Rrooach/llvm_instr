@@ -1,0 +1,6 @@
+/root/llvm/build/CMakeFiles/rebuild_cache.dir
+/root/llvm/build/CMakeFiles/intrinsics_gen.dir
+/root/llvm/build/CMakeFiles/edit_cache.dir
+/root/llvm/build/skeleton/CMakeFiles/rebuild_cache.dir
+/root/llvm/build/skeleton/CMakeFiles/SkeletonPass.dir
+/root/llvm/build/skeleton/CMakeFiles/edit_cache.dir
