@@ -5,17 +5,16 @@
 #include <xen/sys/privcmd.h>
 #include <errno.h>
 #include <xen/xen.h>
-#include <sys/mman.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdio.h>
-#define SHIFT 5
-#define MASK 0x1f
+#define INT_MAX 2147483647
+#define INT_MIN (-INT_MAX - 1)
+#define SHIFT 6
+#define MASK 0x3f
 int main(void){
 	int fd, covFd;
-	int ret;
+	int ret, tmp, count;
 	char* fn;  
-	long long int cover[4690] = {0};
+        long long int cover[5000] = {0};
+	int pc[5000*32];
 	privcmd_hypercall_t set_cover={
 			__HYPERVISOR_set_cov_array,
 			{(long long int)&cover,0,0,0,0}
@@ -31,22 +30,39 @@ int main(void){
 		printf("-------------failed!\n\n");
 		return 0;
 	}
-	
+	count = 0;
 	fn = "/dev/cov";
-//	for (int i = 0; i < 4690; ++i)
-//	{
-//		if (cover[i >> SHIFT] & (1 << (i & MASK)))
-//		printf("%lld \t", cover[i]);
-//	}
+	for (int i = 0; i < 5000; ++i )
+	{
 	
+		printf("%d---\n", i);
+		if (cover[i] == 0)
+			continue;
+		if (cover[i] < 0)
+			cover[i] += (~INT_MIN);
+			
+		for (int j = 0; j < 32; ++j)
+		{
+			if (cover[i] & (1 << j))
+			{
+				pc[count++] = i*32+j;
+			}
+		/*	int n = i*32+j;
+			
+			if (cover[n>>SHIFT] & (1<<(n&MASK)) )
+			{
+				pc[count++] = i*32+j;
+				printf("pc = %d\t", i*32+j);
+			}	
+	i*/	}
+	}
+
 	covFd= open(fn, O_RDWR);
 	if (covFd == -1) {
 		creat(fn, 0777);
 		covFd = open(fn, O_RDWR);
 	}
-//	printf("\n\n %d \n\n", covFd);
-//	printf("\n\n %ld \n\n", sizeof(cover));
-	write(covFd, cover, sizeof(cover));
+	write(covFd, pc, sizeof(cover));
 	close(covFd);
 	close(fd);
 	return 0;
