@@ -35,11 +35,11 @@ int main(void){
 	for (int i = 0; i < 5000; ++i )
 	{
 	
-		printf("%d---\n", i);
+//		printf("%d---\n", i);
 		if (cover[i] == 0)
 			continue;
-		if (cover[i] < 0)
-			cover[i] += (~INT_MIN);
+//		if (cover[i] < 0)
+//			cover[i] += (~INT_MIN);
 			
 		for (int j = 0; j < 32; ++j)
 		{
@@ -56,13 +56,13 @@ int main(void){
 			}	
 	i*/	}
 	}
-
 	covFd= open(fn, O_RDWR);
+
 	if (covFd == -1) {
 		creat(fn, 0777);
 		covFd = open(fn, O_RDWR);
 	}
-	write(covFd, pc, sizeof(cover));
+	write(covFd, pc, sizeof(pc));
 	close(covFd);
 	close(fd);
 	return 0;
